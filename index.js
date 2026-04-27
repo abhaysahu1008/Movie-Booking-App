@@ -1,26 +1,43 @@
-const env = require("dotenv");
-env.config();
+require("dotenv").config();
+
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
+const Movie = require("./models/movie.model");
+
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/home", (req, res) => {
-  console.log("api hitted!");
-
-  return res.json({
-    success: true,
-  });
+  return res.json({ success: true });
 });
 
-app.listen(process.env.PORT, async () => {
+const startServer = async () => {
   try {
     await mongoose.connect(process.env.DB_URL);
     console.log("Database connected successfully!");
-    console.log(`Server started on ${process.env.PORT}`);
+
+    app.listen(process.env.PORT, () => {
+      console.log(`Server started on ${process.env.PORT}`);
+    });
+
+    // test insert
+    const movie = await Movie.create({
+      name: "Wohooooo",
+      description: "Funny Movie",
+      casts: ["Abhay Sahu", "Krishna"],
+      trailerUrl: "https://youtu.be/CZwUzVuIz58",
+      language: "Hindi",
+      releaseDate: new Date("2026-04-27"),
+      director: "Krishna",
+      releaseStatus: "RELEASED",
+    });
+
+    console.log(movie);
   } catch (error) {
-    console.log(error);
+    console.log("Startup error:", error);
   }
-});
+};
+
+startServer();
