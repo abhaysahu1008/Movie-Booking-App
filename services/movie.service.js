@@ -21,4 +21,20 @@ const deleteMovie = async (id) => {
   return response;
 };
 
-module.exports = { createMovie, deleteMovie, getMovieById };
+const updateMovie = async (id, req) => {
+  const response = await Movie.findByIdAndUpdate(id, req.body);
+  return response;
+};
+
+const fetchMovies = async (query) => {
+  const movies = await Movie.find(query);
+
+  return movies;
+};
+module.exports = {
+  createMovie,
+  deleteMovie,
+  getMovieById,
+  updateMovie,
+  fetchMovies,
+};
