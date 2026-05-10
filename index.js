@@ -4,12 +4,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Movie = require("./models/movie.model");
 const MovieRoutes = require("./routes/movie.route");
+const TheatreRoutes = require("./routes/theatre.route");
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 MovieRoutes(app);
+TheatreRoutes(app);
 
 const startServer = async () => {
   try {
